@@ -24,11 +24,12 @@ class SaveRequest extends FormRequest
         return [
             'original_url' => ['required', 'url'],
             'max_count' => ['required', 'numeric', 'min:0'],
-            'expiration_hours' => ['numeric', 'nullable', 'min:0', 'max:24'],
+            'expiration_hours' => ['required_if:expiration_minutes,null', 'numeric', 'nullable', 'min:1', 'max:24'],
             'expiration_minutes' => [
+                'required_if:expiration_hours,null',
                 'numeric',
                 'nullable',
-                'min:0',
+                'min:1',
                 'max:59',
                 function ($attribute, $value, $fail) {
                     if ($this->input('expiration_hours') == 24 && ($value != 0)) {
